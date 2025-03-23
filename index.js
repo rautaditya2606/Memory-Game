@@ -1,17 +1,23 @@
-const express = require("express");
-const app = express();
-const port = 8080;
-const ejsMate = require('ejs-mate');
+const express = require('express');
 const path = require('path');
+const ejsMate = require('ejs-mate');
 
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Set up EJS and EJS Mate
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.get("/",(req,res)=>{
-    res.render("./Simon.ejs")
-})
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(port),()=>{
-    console.log(`listining to port ${port}`)
-}
+// Routes
+app.get('/', (req, res) => {
+    res.render('Simon');
+});
+
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
