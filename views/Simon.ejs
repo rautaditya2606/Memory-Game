@@ -60,8 +60,20 @@
         .pink { background-color: #EB68A0; }
         .green { background-color: #A8DACD; }
 
-        .flash { background-color: white !important; box-shadow: 0 0 20px white; }
-        .userflash { background-color: white !important; box-shadow: 0 0 30px #4CAF50; }
+        .flash {
+            background-color: white !important;
+            box-shadow: 0 0 50px white;
+            transform: scale(1.1);
+            transition: all 0.2s ease;
+        }
+
+        .userflash {
+            background-color: #4CAF50 !important;
+            box-shadow: 0 0 40px #4CAF50;
+            transform: scale(1.1);
+            transition: all 0.2s ease;
+        }
+
         .over { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); }
 
         .score {
@@ -114,12 +126,12 @@
 
         function gameFlash(btn) {
             btn.classList.add("flash");
-            setTimeout(() => btn.classList.remove("flash"), 100);
+            setTimeout(() => btn.classList.remove("flash"), 300);
         }
 
         function userFlash(btn) {
             btn.classList.add("userflash");
-            setTimeout(() => btn.classList.remove("userflash"), 100);
+            setTimeout(() => btn.classList.remove("userflash"), 300);
         }
 
         function levelUp() {
@@ -128,7 +140,16 @@
             h4.innerText = `Level ${level}`;
             let randColor = btns[Math.floor(Math.random() * 4)];
             gameseq.push(randColor);
-            gameFlash(document.querySelector(`#${randColor}`));
+            
+            // Play the entire sequence with delays
+            let delay = 0;
+            gameseq.forEach((color, index) => {
+                delay = (index + 1) * 600;
+                setTimeout(() => {
+                    gameFlash(document.querySelector(`#${color}`));
+                }, delay);
+            });
+
             score.innerText = `Score ${level - 1}`;
         }
 
